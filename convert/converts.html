@@ -1,0 +1,99 @@
+<!doctype html>
+<head>
+	<style>
+		/* CSS codes */
+		body {
+			font-family: arial;
+		}
+
+		button {
+			padding: 10px;
+			background-color: #9b4f7c;
+			color: #ffffff;
+			border: 0px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
+		#output {
+			padding: 10px;
+			width: 100%;
+			margin-top: 20px;
+			line-height: 30px;
+
+		}
+
+		.hide {
+			display: none;
+		}
+
+		.show {
+			display: block;
+		}
+
+		.text-center {
+			text-align: center;
+		}
+
+		body {
+			background-image: url('1.png');
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: cover;
+		}
+		
+	</style>
+	<title>Speech Arabic to Text</title>
+
+</head>
+
+<body>
+
+	<div class="text-center">
+		<h2>Speech to Text</h2>
+		<p>Click to start </p>
+		<p><button type="button" onclick="runSpeechRecognition()">Speech arabic to Text</button> &nbsp; <span
+				id="start"></span></p>
+				<div id="output" class="hide"></div>
+	</div>
+
+	
+
+	<script> /* JS codes */
+		
+		function runSpeechRecognition() {
+			var output = document.getElementById("output");
+			var start = document.getElementById("start");
+
+			// new speech recognition object
+			var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+			var recognition = new SpeechRecognition();
+			recognition.lang = 'ar';
+
+
+			// This runs when the speech recognition service starts
+			recognition.onstart = function () {
+				start.innerHTML = "<small>listening, please speak...</small>";
+			};
+
+			recognition.onspeechend = function () {
+				start.innerHTML = "<small>stopped listening, hope you are done...</small>";
+				recognition.stop();
+			}
+
+			// This runs when the speech recognition service returns result
+			recognition.onresult = function (event) {
+				var transcript = event.results[0][0].transcript;
+				var confidence = event.results[0][0].confidence;
+				output.innerHTML = "<b>Text:</b> " + transcript + "<br/> <b>Confidence:</b> " + confidence * 100 + "%";
+				output.classList.remove("hide");
+			};
+
+			recognition.start();
+		}
+	</script>
+	<script src="control.js"></script>
+
+</body>
+
+</html>
